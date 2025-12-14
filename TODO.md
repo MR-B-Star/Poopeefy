@@ -1,0 +1,3 @@
+- [x] Update FormPengepull.blade.php back link to use {{ route('dashboard') }}
+- [x] Update Login.blade.php links to use {{ route('register') }} and {{ route('dashboard') }}
+- [x] Update Register.blade.php links to use {{ route('login') }} and {{ route('dashboard') }}
