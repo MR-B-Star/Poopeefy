@@ -2,19 +2,40 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Submission extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'nama','telepon','email','ktp',
-        'alamat','kelurahan','kecamatan','kabupaten','provinsi','kodepos',
-        'nama_usaha','lama_operasi','kapasitas',
-        'jenis_limbah','penyimpanan','kendaraan','catatan',
-        'status'
+        'nama',
+        'telepon',
+        'email',
+        'ktp',
+        'alamat',
+        'kelurahan',
+        'kecamatan',
+        'kabupaten',
+        'provinsi',
+        'kodepos',
+        'nama_usaha',
+        'lama_operasi',
+        'kapasitas',
+        'jenis_limbah',
+        'penyimpanan',
+        'kendaraan',
+        'catatan',
+        'status',
     ];
 
     protected $casts = [
-        'jenis_limbah' => 'array',
-    ];
+    'jenis_limbah' => 'array',
+];
+public function industry()
+{
+    return $this->belongsTo(Industry::class);
+}
+
 }

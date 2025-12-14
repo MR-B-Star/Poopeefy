@@ -60,4 +60,14 @@ class IndustryController extends Controller
         $industry->delete();
         return redirect()->route('industries.index')->with('success', 'Industry berhasil dihapus.');
     }
+
+    public function submissions()
+{
+    $industry = auth()->user()->industry;
+
+    return view('submissions.index', [
+        'submissions' => $industry->submissions()->latest()->get()
+    ]);
+}
+
 }

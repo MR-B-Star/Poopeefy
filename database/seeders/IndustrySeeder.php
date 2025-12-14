@@ -1,9 +1,14 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Industry;
+
 class IndustrySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        \App\Models\Industry::factory()->count(5)->create();
-
         Industry::create([
             'industry_name' => 'PT EcoGreen Fertilizer',
             'location' => 'Jember, Jawa Timur',

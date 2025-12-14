@@ -13,4 +13,9 @@ class Industry extends Model
         'contact',
         'method'
     ];
+
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
 }

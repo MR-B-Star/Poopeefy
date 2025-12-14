@@ -75,6 +75,11 @@ Route::get('/submission',
     [SubmissionController::class, 'index']
 )->name('submission.index');
 
+Route::post('/submissions/{submission}/send',
+    [SubmissionController::class, 'sendToIndustry']
+)->name('submissions.send');
+
+
 
 // Route::get('/dashboard-admin', function () {
 //     if (!session('is_admin')) {

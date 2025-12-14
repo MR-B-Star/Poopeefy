@@ -1,8 +1,15 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\Article;
+
 class ArticleSeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        \App\Models\Article::factory()->count(5)->create();
+        Article::factory()->count(5)->create();
 
         Article::create([
             'title' => 'Pengolahan Limbah Kotoran Makhluk Hidup untuk Kompos',

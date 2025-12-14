@@ -21,25 +21,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('articles', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('content');
-            $table->unsignedBigInteger('created_by');
-            $table->timestamps();
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
-        });
-
-        Schema::create('industries', function (Blueprint $table) {
-            $table->id();
-            $table->string('industry_name');
-            $table->string('location');
-            $table->string('capacity')->nullable();
-            $table->string('contact')->nullable();
-            $table->text('method')->nullable();
-            $table->timestamps();
-        });
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
