@@ -52,7 +52,7 @@
                 <a href="#status" class="px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white transition-all font-medium">Status Order</a>
             </nav>
 
-            <button class="px-4 py-2 rounded-lg border-2 border-white/80 text-white font-medium hover:bg-white hover:text-primary transition-all duration-300 text-sm shadow-sm">
+            <button  onclick="window.location.href='{{ route('dashboard-awal') }}'" class="px-4 py-2 rounded-lg border-2 border-white/80 text-white font-medium hover:bg-white hover:text-primary transition-all duration-300 text-sm shadow-sm">
                 Keluar
             </button>
         </div>
