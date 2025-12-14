@@ -3,511 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Poopeefy</title>
+    <title>Dashboard - Poopeefy</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#4a7c2c',  // Hijau Utama
+                            dark: '#2d5016',     // Hijau Gelap (Text/Footer)
+                            light: '#6ba83d',    // Hijau Terang (Gradient)
+                        },
+                        secondary: {
+                            DEFAULT: '#8B6F47',  // Coklat
+                            dark: '#6d5736',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #4a7c2c;
-            --primary-dark: #2d5016;
-            --primary-light: #6ba83d;
-            --secondary: #8B6F47;
-            --secondary-dark: #6d5736;
-            --gray-50: #f9fafb;
-            --gray-200: #e5e7eb;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: var(--gray-50);
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            background-color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 4rem;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            font-size: 1.875rem;
-        }
-
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary-dark);
-        }
-
-        nav {
-            display: none;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        nav a {
-            color: var(--gray-700);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        nav a:hover {
-            color: var(--primary);
-        }
-
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-outline {
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            background-color: white;
-            display: none;
-        }
-
-        .btn-outline:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-primary {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Hero Banner */
-        .hero {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-            padding: 3rem 1rem;
-            text-align: center;
-        }
-
-        .hero-container {
-            max-width: 1280px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 2.25rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            opacity: 0.9;
-        }
-
-        /* Main Content */
-        .main-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 1rem 3rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .card-title {
-            font-size: 1.875rem;
-            font-weight: bold;
-            color: var(--primary-dark);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .info-box {
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            border-left: 4px solid;
-            margin: 1rem 0;
-        }
-
-        .info-box-primary {
-            background-color: rgba(74, 124, 44, 0.05);
-            border-color: var(--primary);
-        }
-
-        .info-box-secondary {
-            background-color: rgba(139, 111, 71, 0.05);
-            border-color: var(--secondary);
-        }
-
-        .info-box h3 {
-            font-weight: bold;
-            font-size: 1.125rem;
-            color: var(--primary-dark);
-            margin-bottom: 0.75rem;
-        }
-
-        .mission-list {
-            list-style: none;
-        }
-
-        .mission-list li {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .checkmark {
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        /* Articles */
-        .article {
-            border-bottom: 1px solid var(--gray-200);
-            padding-bottom: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .article:last-child {
-            border-bottom: none;
-        }
-
-        .article-container {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .article-icon {
-            flex-shrink: 0;
-            width: 6rem;
-            height: 6rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.25rem;
-        }
-
-        .article-icon-1 {
-            background: linear-gradient(to bottom right, var(--primary), var(--primary-light));
-        }
-
-        .article-icon-2 {
-            background: linear-gradient(to bottom right, var(--secondary), var(--primary-light));
-        }
-
-        .article-icon-3 {
-            background: linear-gradient(to bottom right, var(--primary-light), var(--primary));
-        }
-
-        .article-icon-4 {
-            background: linear-gradient(to bottom right, var(--primary), var(--secondary));
-        }
-
-        .article-content h3 {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-dark);
-            margin-bottom: 0.5rem;
-            cursor: pointer;
-        }
-
-        .article-content h3:hover {
-            color: var(--primary);
-        }
-
-        .article-content p {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .article-meta {
-            display: flex;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: var(--gray-500);
-        }
-
-        /* Sidebar */
-        .sidebar-card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .sidebar-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-full {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .btn-full-outline {
-            background-color: white;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-full-outline:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        .btn-full-primary {
-            background: linear-gradient(to right, var(--primary), var(--primary-light));
-            color: white;
-        }
-
-        .btn-full-primary:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .divider {
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--gray-200);
-            text-align: center;
-        }
-
-        .divider p {
-            font-size: 0.875rem;
-            color: var(--gray-600);
-        }
-
-        .divider a {
-            color: var(--primary);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .divider a:hover {
-            text-decoration: underline;
-        }
-
-        .tip-box {
-            margin-top: 1rem;
-            padding: 1rem;
-            background-color: rgba(74, 124, 44, 0.05);
-            border-radius: 0.5rem;
-        }
-
-        .tip-box p {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-        }
-
-        .quick-links {
-            background: linear-gradient(to bottom right, var(--primary), var(--primary-light));
-            color: white;
-        }
-
-        .quick-links ul {
-            list-style: none;
-        }
-
-        .quick-links li {
-            margin-bottom: 0.5rem;
-        }
-
-        .quick-links a {
-            display: block;
-            padding: 0.5rem 0.75rem;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 0.5rem;
-            color: white;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .quick-links a:hover {
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--primary-dark);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            margin-top: 3rem;
-        }
-
-        footer p {
-            margin: 0.5rem 0;
-        }
-
-        .footer-subtitle {
-            opacity: 0.9;
-        }
-
-        /* Responsive */
-        @media (min-width: 768px) {
-            nav {
-                display: flex;
-            }
-
-            .btn-outline {
-                display: inline-block;
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .hero p {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .grid {
-                grid-template-columns: 2fr 1fr;
-            }
-
-            .main-content {
-                grid-column: span 1;
-            }
+        /* CSS tambahan kecil untuk scroll smooth jika diperlukan */
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="header-container">
-            <div class="logo">
-                <span class="logo-icon">🌱</span>
-                <span class="logo-text">Poopeefy</span>
+<body class="bg-gray-50 font-sans antialiased leading-relaxed text-gray-700">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <span class="text-3xl">🌱</span>
+                <span class="text-2xl font-bold text-primary-dark">Poopeefy</span>
             </div>
-            <nav>
-                <a href="#info">Informasi</a>
-                <a href="#articles">Artikel</a>
-                <a href="#form">Form Pengepul</a>
+
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="#info" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Informasi</a>
+                <a href="#articles" class="text-gray-700 hover:text-primary transition-colors duration-300 font-medium">Artikel</a>
             </nav>
-            <div class="auth-buttons">
-                <button onclick="window.location.href='{{ route('login') }}'" class="btn btn-outline">
+
+            <div class="flex items-center gap-3">
+                <button onclick="window.location.href='{{ route('login') }}'" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300">
                     Masuk
                 </button>
-                <button onclick="window.location.href='{{ route('register') }}'" class="btn btn-primary">
+                <button onclick="window.location.href='{{ route('register') }}'" class="hidden md:inline-block px-4 py-2 rounded-lg font-medium border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300">
                     Daftar
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Hero Banner -->
-    <section class="hero">
-        <div class="hero-container">
-            <h1>Dashboard Poopeefy</h1>
-            <p>Platform Distribusi Limbah Kotoran Menjadi Pupuk</p>
+    <section class="bg-gradient-to-r from-primary to-primary-light text-white py-12 text-center px-4">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="text-4xl font-bold mb-4">Dashboard Poopeefy</h1>
+            <p class="text-xl opacity-90">Platform Distribusi Limbah Kotoran Menjadi Pupuk</p>
         </div>
     </section>
 
-    <div class="main-container">
-        <div class="grid">
-            <!-- Main Content -->
-            <div class="main-content">
-                <!-- Informasi Section -->
-                <section id="info" class="card">
-                    <h2 class="card-title">
+    <div class="max-w-7xl mx-auto px-4 pb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-2 space-y-8">
+                
+                <section id="info" class="bg-white rounded-xl shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] p-8 mt-8">
+                    <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center gap-3">
                         <span>ℹ️</span> Informasi Poopeefy
                     </h2>
                     <div>
-                        <p>
+                        <p class="mb-6">
                             <strong>Poopeefy</strong> adalah platform inovatif yang menghubungkan pengepul limbah kotoran dengan pengelola pupuk organik. Kami berkomitmen untuk menciptakan ekosistem yang berkelanjutan dengan mengubah limbah menjadi sumber daya berharga.
                         </p>
-                        <div class="info-box info-box-primary">
-                            <h3>Visi Kami</h3>
+                        
+                        <div class="p-6 rounded-lg bg-primary/5 border-l-4 border-primary mb-4">
+                            <h3 class="font-bold text-lg text-primary-dark mb-2">Visi Kami</h3>
                             <p>Menciptakan masa depan yang lebih hijau dengan mengoptimalkan pengelolaan limbah kotoran menjadi pupuk berkualitas tinggi untuk pertanian berkelanjutan.</p>
                         </div>
-                        <div class="info-box info-box-secondary">
-                            <h3>Misi Kami</h3>
-                            <ul class="mission-list">
-                                <li>
-                                    <span class="checkmark">✓</span>
+
+                        <div class="p-6 rounded-lg bg-secondary/5 border-l-4 border-secondary">
+                            <h3 class="font-bold text-lg text-primary-dark mb-2">Misi Kami</h3>
+                            <ul class="space-y-2">
+                                <li class="flex gap-2">
+                                    <span class="text-primary font-bold">✓</span>
                                     <span>Menyediakan platform distribusi yang efisien dan transparan</span>
                                 </li>
-                                <li>
-                                    <span class="checkmark">✓</span>
+                                <li class="flex gap-2">
+                                    <span class="text-primary font-bold">✓</span>
                                     <span>Meningkatkan kesadaran tentang manfaat pupuk kotoran</span>
                                 </li>
-                                <li>
-                                    <span class="checkmark">✓</span>
+                                <li class="flex gap-2">
+                                    <span class="text-primary font-bold">✓</span>
                                     <span>Memberdayakan pengepul dan pengelola limbah kotoran mahkluk hidup</span>
                                 </li>
-                                <li>
-                                    <span class="checkmark">✓</span>
+                                <li class="flex gap-2">
+                                    <span class="text-primary font-bold">✓</span>
                                     <span>Mendukung pertanian organik dan ramah lingkungan</span>
                                 </li>
                             </ul>
@@ -515,24 +112,22 @@
                     </div>
                 </section>
 
-                <!-- Articles Section -->
-                <section id="articles" class="card">
-                    <h2 class="card-title">
+                <section id="articles" class="bg-white rounded-xl shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] p-8">
+                    <h2 class="text-3xl font-bold text-primary-dark mb-6 flex items-center gap-3">
                         <span>📰</span> Artikel Terbaru
                     </h2>
-                    <div>
-                        <!-- Article 1 -->
-                        <article class="article">
-                            <div class="article-container">
-                                <div class="article-icon article-icon-1">
+                    <div class="space-y-6">
+                        <article class="border-b border-gray-200 pb-6 last:border-0 last:pb-0">
+                            <div class="flex gap-4 md:gap-6">
+                                <div class="shrink-0 w-24 h-24 rounded-lg bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-4xl">
                                     🌱
                                 </div>
-                                <div class="article-content">
-                                    <h3>Manfaat Pupuk Organik untuk Tanaman Pangan</h3>
-                                    <p>
+                                <div>
+                                    <h3 class="text-xl font-bold text-primary-dark mb-2 hover:text-primary cursor-pointer transition-colors">Manfaat Pupuk Organik untuk Tanaman Pangan</h3>
+                                    <p class="text-gray-600 text-sm mb-2">
                                         Pupuk organik memiliki berbagai manfaat untuk meningkatkan produktivitas tanaman pangan. Kandungan nutrisi alami membantu pertumbuhan optimal tanpa merusak tanah...
                                     </p>
-                                    <div class="article-meta">
+                                    <div class="flex gap-4 text-sm text-gray-500">
                                         <span>📅 15 Nov 2025</span>
                                         <span>👤 Admin Poopeefy</span>
                                     </div>
@@ -540,18 +135,17 @@
                             </div>
                         </article>
 
-                        <!-- Article 2 -->
-                        <article class="article">
-                            <div class="article-container">
-                                <div class="article-icon article-icon-2">
+                        <article class="border-b border-gray-200 pb-6 last:border-0 last:pb-0">
+                            <div class="flex gap-4 md:gap-6">
+                                <div class="shrink-0 w-24 h-24 rounded-lg bg-gradient-to-br from-secondary to-primary-light flex items-center justify-center text-4xl">
                                     ♻️
                                 </div>
-                                <div class="article-content">
-                                    <h3>Proses Pengolahan Limbah Organik yang Efektif</h3>
-                                    <p>
+                                <div>
+                                    <h3 class="text-xl font-bold text-primary-dark mb-2 hover:text-primary cursor-pointer transition-colors">Proses Pengolahan Limbah Organik yang Efektif</h3>
+                                    <p class="text-gray-600 text-sm mb-2">
                                         Mengetahui proses pengolahan limbah organik yang benar sangat penting. Dengan metode komposting yang tepat, limbah dapat diubah menjadi pupuk berkualitas...
                                     </p>
-                                    <div class="article-meta">
+                                    <div class="flex gap-4 text-sm text-gray-500">
                                         <span>📅 10 Nov 2025</span>
                                         <span>👤 Tim Edukasi</span>
                                     </div>
@@ -559,18 +153,17 @@
                             </div>
                         </article>
 
-                        <!-- Article 3 -->
-                        <article class="article">
-                            <div class="article-container">
-                                <div class="article-icon article-icon-3">
+                        <article class="border-b border-gray-200 pb-6 last:border-0 last:pb-0">
+                            <div class="flex gap-4 md:gap-6">
+                                <div class="shrink-0 w-24 h-24 rounded-lg bg-gradient-to-br from-primary-light to-primary flex items-center justify-center text-4xl">
                                     🚜
                                 </div>
-                                <div class="article-content">
-                                    <h3>Kisah Sukses Petani dengan Pupuk Organik</h3>
-                                    <p>
+                                <div>
+                                    <h3 class="text-xl font-bold text-primary-dark mb-2 hover:text-primary cursor-pointer transition-colors">Kisah Sukses Petani dengan Pupuk Organik</h3>
+                                    <p class="text-gray-600 text-sm mb-2">
                                         Pak Budi dari Jawa Timur berhasil meningkatkan hasil panen hingga 40% setelah beralih ke pupuk organik. Pengalaman ini membuktikan efektivitas pupuk organik...
                                     </p>
-                                    <div class="article-meta">
+                                    <div class="flex gap-4 text-sm text-gray-500">
                                         <span>📅 5 Nov 2025</span>
                                         <span>👤 Reporter Lapangan</span>
                                     </div>
@@ -578,18 +171,17 @@
                             </div>
                         </article>
 
-                        <!-- Article 4 -->
-                        <article class="article">
-                            <div class="article-container">
-                                <div class="article-icon article-icon-4">
+                        <article class="border-b border-gray-200 pb-6 last:border-0 last:pb-0">
+                            <div class="flex gap-4 md:gap-6">
+                                <div class="shrink-0 w-24 h-24 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-4xl">
                                     🌍
                                 </div>
-                                <div class="article-content">
-                                    <h3>Dampak Positif Pengelolaan Limbah terhadap Lingkungan</h3>
-                                    <p>
+                                <div>
+                                    <h3 class="text-xl font-bold text-primary-dark mb-2 hover:text-primary cursor-pointer transition-colors">Dampak Positif Pengelolaan Limbah terhadap Lingkungan</h3>
+                                    <p class="text-gray-600 text-sm mb-2">
                                         Pengelolaan limbah organik yang baik dapat mengurangi emisi gas rumah kaca hingga 30%. Ini adalah langkah nyata untuk menjaga kelestarian lingkungan...
                                     </p>
-                                    <div class="article-meta">
+                                    <div class="flex gap-4 text-sm text-gray-500">
                                         <span>📅 1 Nov 2025</span>
                                         <span>👤 Tim Lingkungan</span>
                                     </div>
@@ -600,79 +192,42 @@
                 </section>
             </div>
 
-            <!-- Sidebar -->
-            <div>
-                <!-- Auth Buttons Section -->
-                <section class="sidebar-card">
-                    <h3 class="sidebar-title">
+            <div class="space-y-8">
+                
+                <section class="bg-white rounded-xl shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] p-6 mt-8">
+                    <h3 class="text-xl font-bold text-primary-dark mb-4 flex items-center gap-2">
                         <span>🔐</span> Akses Akun
                     </h3>
-                    <div>
-                        <button onclick="window.location.href='{{ route('login') }}'" class="btn-full btn-full-outline">
+                    <div class="space-y-3">
+                        <button onclick="window.location.href='{{ route('login') }}'" class="w-full py-3 px-4 rounded-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
                             <span>🔓</span> Masuk ke Akun
                         </button>
-                        <button onclick="window.location.href='{{ route('register') }}'" class="btn-full btn-full-primary">
+                        <button onclick="window.location.href='{{ route('register') }}'" class="w-full py-3 px-4 rounded-lg font-semibold border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
                             <span>✨</span> Daftar Sekarang
                         </button>
-                        <div class="divider">
-                            <p>
-                                Belum tahu fitur kami?
-                                <a href="index.html">Pelajari lebih lanjut</a>
+                        
+                        <div class="pt-3 border-t border-gray-200 text-center">
+                            <p class="text-sm text-gray-600">
+                                Belum tahu fitur kami? 
+                                <a href="index.html" class="text-primary font-semibold hover:underline">Pelajari lebih lanjut</a>
                             </p>
                         </div>
                     </div>
                 </section>
 
-                <!-- Form Pengepul Section -->
-                <section id="form" class="sidebar-card">
-                    <h3 class="sidebar-title">
-                        <span>📋</span> Form Pengepul Limbah
-                    </h3>
-                    <p style="color: var(--gray-600); margin-bottom: 1rem; font-size: 0.875rem;">
-                        Ajukan pengambilan limbah organik Anda dengan mengisi form pengepul kami.
-                    </p>
-                    <button onclick="window.location.href='{{ route('form-pengepull') }}'" class="btn-full btn-full-primary">
-                        <span>📝</span> Isi Form Pengepul
-                    </button>
-                    <div class="tip-box">
-                        <p>
-                            <strong>💡 Tips:</strong> Pastikan data yang Anda masukkan akurat agar proses pengambilan limbah dapat berjalan lancar.
-                        </p>
-                    </div>
-                </section>
-
-                <!-- Quick Links -->
-                <section class="sidebar-card quick-links">
-                    <h3 class="sidebar-title">🔗 Link Berguna</h3>
-                    <ul>
-                        <li>
-                            <a href="index.html#fitur">Fitur Poopeefy</a>
-                        </li>
-                        <li>
-                            <a href="index.html#cara-kerja">Cara Kerja</a>
-                        </li>
-                        <li>
-                            <a href="index.html#edukasi">Edukasi Pupuk Organik</a>
-                        </li>
-                        <li>
-                            <a href="index.html#kontak">Hubungi Kami</a>
-                        </li>
-                    </ul>
-                </section>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div>
-            <p style="font-size: 1.125rem; margin-bottom: 0.5rem;">&copy; 2025 Poopeefy. Semua hak dilindungi.</p>
-            <p class="footer-subtitle">Mengubah limbah menjadi berkah untuk pertanian berkelanjutan</p>
+    <footer class="bg-primary-dark text-white py-8 text-center mt-12">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-lg mb-2">&copy; 2025 Poopeefy. Semua hak dilindungi.</p>
+            <p class="opacity-90 text-sm">Mengubah limbah menjadi berkah untuk pertanian berkelanjutan</p>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll for navigation links
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
