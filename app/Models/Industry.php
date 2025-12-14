@@ -8,6 +8,8 @@ class Industry extends Model
 {
     protected $fillable = [
         'industry_name',
+        'email',
+        'password',
         'location',
         'capacity',
         'contact',

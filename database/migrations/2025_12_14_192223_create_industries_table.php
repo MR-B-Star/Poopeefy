@@ -10,6 +10,8 @@ return new class extends Migration {
         Schema::create('industries', function (Blueprint $table) {
             $table->id();
             $table->string('industry_name');
+            $table->string('email')->unique();
+            $table->string('password');
             $table->string('location');
             $table->string('capacity')->nullable();
             $table->string('contact')->nullable();

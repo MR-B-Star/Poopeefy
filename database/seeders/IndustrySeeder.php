@@ -11,6 +11,8 @@ class IndustrySeeder extends Seeder
     {
         Industry::create([
             'industry_name' => 'PT EcoGreen Fertilizer',
+            'email' => 'ecogreen@gmail.com',
+            'password' => 'ecogreen123',
             'location' => 'Jember, Jawa Timur',
             'capacity' => '100 ton/bulan',
             'contact' => '081234567890',
@@ -19,6 +21,8 @@ class IndustrySeeder extends Seeder
 
         Industry::create([
             'industry_name' => 'BioGas Nusantara',
+            'email' => 'biogas@gmail.com',
+            'password' => 'biogas123',
             'location' => 'Banyuwangi, Jawa Timur',
             'capacity' => '200 ton/bulan',
             'contact' => '082134567991',
