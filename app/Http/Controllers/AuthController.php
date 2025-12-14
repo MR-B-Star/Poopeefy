@@ -7,24 +7,32 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     public function login(Request $request)
-    {
-        if (
-            $request->email === 'admin@gmail.com' &&
-            $request->password === 'admin123'
-        ) {
-            session([
-                'is_admin' => true
-            ]);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-            return redirect()->route('dashboard-admin');
-        }
+    // 🔥 ADMIN HARD-CODE CHECK
+    if (
+        $request->email === 'admin@gmail.com' &&
+        $request->password === 'admin123'
+    ) {
+        // optional: set session flag biar keliatan "login"
+        session(['is_admin' => true]);
 
-        return back()->with('error', 'Email atau password salah');
+        return redirect('/dashboard-admin');
     }
 
-    public function logout()
-    {
-        session()->forget('is_admin');
-        return redirect('/login');
+    // LOGIN NORMAL (USER BIASA)
+    if (Auth::attempt($request->only('email', 'password'))) {
+        $request->session()->regenerate();
+        return redirect()->intended('/dashboard');
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ]);
+}
+
 }
