@@ -31,7 +31,6 @@
 </head>
 <body class="bg-gray-50 font-sans antialiased leading-relaxed text-gray-700">
 
-    <!-- Notification Container for Real-time Updates -->
     <div id="notification-toast" class="fixed top-24 right-4 z-50 transform transition-all duration-300 translate-x-full opacity-0"></div>
 
     <header class="bg-gradient-to-r from-primary to-primary-light shadow-lg sticky top-0 z-50">
@@ -45,6 +44,7 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-2">
+                <a href="#form-status" class="px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white transition-all font-medium">Status</a>
                 <a href="#info" class="px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white transition-all font-medium">Informasi</a>
                 <a href="#articles" class="px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white transition-all font-medium">Artikel</a>
                 <a href="#form" class="px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white transition-all font-medium">Form Pengepul</a>
@@ -52,9 +52,9 @@
 
             <div class="flex items-center gap-4">
                 {{-- Use the 'logout' route and add the CSRF token for security --}}
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('dashboard-awal') }}" method="POST">
                     @csrf
-                    <button type="submit" class="px-4 py-2 rounded-lg border-2 border-white/80 text-white font-medium hover:bg-white hover:text-primary transition-all duration-300 text-sm shadow-sm">
+                    <button onclick="window.location.href='{{ route('dashboard-awal') }}'" class="px-4 py-2 rounded-lg border-2 border-white/80 text-white font-medium hover:bg-white hover:text-primary transition-all duration-300 text-sm shadow-sm">
                         Keluar
                     </button>
                 </form>
@@ -74,6 +74,16 @@
             
             <div class="lg:col-span-2 space-y-8">
                 
+                <section id="form-status" class="bg-white rounded-xl shadow-lg border-t-4 border-secondary p-8">
+                    <h2 class="text-2xl font-bold text-primary-dark mb-6 flex items-center gap-3">
+                        <span>⏳</span> Status Form Limbah Terkirim
+                    </h2>
+                    
+                    <div id="form-status-list" class="space-y-4">
+                        <p class="text-gray-500 text-center py-4">Memuat status form...</p>
+                    </div>
+                </section>
+
                 <section id="info" class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
                     <h2 class="text-2xl font-bold text-primary-dark mb-6 flex items-center gap-3">
                         <span>ℹ️</span> Informasi Terkini
@@ -174,7 +184,7 @@
                     <p class="text-sm text-gray-600 mb-4">
                         Punya stok limbah baru? Segera ajukan form agar industri bisa melihat penawaran Anda.
                     </p>
-                    <button onclick="window.location.href='{{ route('FormPengepull') }}'" class="w-full py-3 px-4 rounded-lg font-bold bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
+                    <button onclick="window.location.href='{{ route('form-pengepull') }}'" class="w-full py-3 px-4 rounded-lg font-bold bg-gradient-to-r from-primary to-primary-light text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2">
                         <span>📝</span> Isi Form Pengepul
                     </button>
                 </section>
@@ -190,7 +200,64 @@
     </footer>
 
     <script>
-        // --- Polling implementation to check for updates ---
+        // --- Form Status Data and Rendering (NEW SCRIPT) ---
+        
+        const recentForms = [
+            { id: 'POO-382', tanggal: '14 Des 2025', jenis: 'Kotoran Sapi', jumlah: '500 kg', status: 'Diterima' }
+        ];
+
+        function getStatusBadge(status) {
+            let classes = 'inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap';
+            let icon = '';
+            
+            switch(status) {
+                case 'Diterima':
+                    classes += ' bg-green-100 text-green-800';
+                    icon = '✅';
+                    break;
+                case 'Ditolak':
+                    classes += ' bg-red-100 text-red-800';
+                    icon = '❌';
+                    break;
+                case 'Menunggu':
+                default:
+                    classes += ' bg-yellow-100 text-yellow-800';
+                    icon = '⏳';
+                    break;
+            }
+            
+            return `<span class="${classes}">${icon} ${status}</span>`;
+        }
+
+        function renderFormStatus() {
+            const container = document.getElementById('form-status-list');
+            if (!container) return;
+
+            if (recentForms.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-4">Belum ada form limbah yang terkirim. Kirim sekarang!</p>';
+                return;
+            }
+
+            container.innerHTML = recentForms.map(form => `
+                <div class="p-4 border border-gray-200 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center hover:bg-gray-50 transition-colors gap-2">
+                    <div class="flex flex-col">
+                        <div class="text-sm font-bold text-gray-800">${form.id}</div>
+                        <div class="text-xs text-gray-500">
+                            <span class="font-medium text-gray-700">${form.jenis}</span> • ${form.jumlah}
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 sm:ml-auto">
+                        <span class="text-xs text-gray-400">${form.tanggal}</span>
+                        ${getStatusBadge(form.status)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Run the render function when the page loads
+        document.addEventListener('DOMContentLoaded', renderFormStatus);
+
+        // --- Polling implementation to check for updates (EXISTING SCRIPT) ---
 
         // Start checking for updates every 5 seconds (5000 milliseconds)
         const pollingInterval = setInterval(checkForUpdates, 5000);
@@ -225,7 +292,7 @@
             }
         }
 
-        // --- Notification UI functions (no changes needed here) ---
+        // --- Notification UI functions (EXISTING SCRIPT) ---
 
         function showNotification(message, status) {
             const toast = document.getElementById('notification-toast');
@@ -259,27 +326,34 @@
         }
     </script>
 
+    <script type="module">
+        import Echo from "{{ asset('js/echo.js') }}";
+        import { ReverbConnector } from "laravel-reverb";
+
+        window.Echo = new Echo({
+            broadcaster: ReverbConnector,
+            wsHost: window.location.hostname,
+            wsPort: 8080,
+            forceTLS: false,
+        });
+
+        console.log("Realtime listener berjalan...");
+
+        // Listening to broadcast event
+        window.Echo.channel('surat-status')
+            .listen('.surat.disetujui', (e) => {
+                // Tampilkan notifikasi realtime
+                showNotification(`Surat #${e.surat.id} telah disetujui!`, 'Terima');
+                console.log("Realtime update diterima:", e);
+                
+                // Tambahan: Refresh tampilan status form jika menerima notifikasi
+                if (document.getElementById('form-status-list')) {
+                    // Dalam implementasi nyata, Anda akan memuat ulang data dari backend.
+                    // Di sini, kita hanya memberi tahu pengguna untuk memuat ulang halaman.
+                    alert('Status form telah diperbarui secara realtime. Silakan refresh halaman.');
+                    // window.location.reload(); // Jika ingin memuat ulang seluruh halaman
+                }
+            });
+    </script>
 </body>
 </html>
-
-<script type="module">
-    import Echo from "{{ asset('js/echo.js') }}";
-    import { ReverbConnector } from "laravel-reverb";
-
-    window.Echo = new Echo({
-        broadcaster: ReverbConnector,
-        wsHost: window.location.hostname,
-        wsPort: 8080,
-        forceTLS: false,
-    });
-
-    console.log("Realtime listener berjalan...");
-
-    // Listening to broadcast event
-    window.Echo.channel('surat-status')
-        .listen('.surat.disetujui', (e) => {
-            // Tampilkan notifikasi realtime
-            showNotification(`Surat #${e.surat.id} telah disetujui!`, 'Terima');
-            console.log("Realtime update diterima:", e);
-        });
-</script>
